@@ -47,7 +47,7 @@ class SecurityConfig {
     }
 
     @Bean
-    fun passwordEncoder() : PasswordEncoder {
+    fun passwordEncoder() : BCryptPasswordEncoder { // Especifico BCrypt porque sino no se detecta el Bean en UsuarioService
         return BCryptPasswordEncoder()
     }
 
