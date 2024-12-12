@@ -35,9 +35,12 @@ class SecurityConfig {
     fun securityFilterChain(http: HttpSecurity) : SecurityFilterChain {
 
         return http
-            .csrf { csrf -> csrf.disable() } // Cross-Site Forgery
+            .csrf { csrf -> csrf.disable() }
             .authorizeHttpRequests { auth -> auth
-                .anyRequest().permitAll()
+                .requestMatchers("/users/register").permitAll()
+                .requestMatchers("/users/login").permitAll()
+                .requestMatchers(HttpMethod.GET,"/users/{id}").authenticated()
+                .anyRequest().authenticated()
             }
             .oauth2ResourceServer { oauth2 -> oauth2.jwt(Customizer.withDefaults()) }
             .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }

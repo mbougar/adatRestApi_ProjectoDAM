@@ -21,5 +21,5 @@ data class Comentario(
     var comentario: String? = null,
 
     @Column(name = "fecha_creacion")
-    var fechaCreacion: java.time.LocalDateTime? = null
+    var fechaCreacion: java.time.LocalDateTime? = null,
 )
