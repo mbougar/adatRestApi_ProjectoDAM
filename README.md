@@ -33,13 +33,7 @@ Esta tabla almacena la información de los usuarios registrados en la aplicació
 - **bio** (text): Breve biografía del usuario (campo opcional).
 - **fecha_registro** (datetime): Fecha de registro del usuario.
 
-### 2. **ingredientes**
-Contiene los ingredientes disponibles en la plataforma. Cada ingrediente tiene un nombre único.
-
-- **id** (bigint): Identificador único del ingrediente (clave primaria, autoincrementable).
-- **nombre** (varchar): Nombre del ingrediente (debe ser único).
-
-### 3. **recetas**
+### 2. **recetas**
 Almacena la información de las recetas compartidas por los usuarios.
 
 - **id** (bigint): Identificador único de la receta.
@@ -49,16 +43,7 @@ Almacena la información de las recetas compartidas por los usuarios.
 - **pasos** (text): Descripción detallada de los pasos para preparar la receta.
 - **imagen** (bytea): Imagen de la receta (se guardara como un array de bytes).
 
-### 4. **recetas_ingredientes**
-Tabla de relación entre recetas e ingredientes. Una receta puede tener varios ingredientes y un ingrediente puede estar presente en muchas recetas.
-
-- **id_receta** (bigint): Identificador de la receta (relación con la tabla `recetas`).
-- **id_ingrediente** (bigint): Identificador del ingrediente (relación con la tabla `ingredientes`).
-- **cantidad** (varchar): Cantidad de ingrediente utilizados en la receta.
-
-Ya que esta tabla define la relacion entre recetas e ingredientes su clave primaria está compuesta por los campos `id_receta` e `id_ingrediente`.
-
-### 5. **favoritos**
+### 3. **favoritos**
 Tabla que almacena las recetas marcadas como favoritas por los usuarios.
 
 - **id** (bigint): Identificador único del favorito.
@@ -66,7 +51,7 @@ Tabla que almacena las recetas marcadas como favoritas por los usuarios.
 - **id_receta** (bigint): Identificador de la receta marcada como favorita (relación con la tabla `recetas`).
 - **fecha_agregado** (datetime): Fecha en la que la receta fue agregada a favoritos.
 
-### 6. **comentarios**
+### 4. **comentarios**
 Esta tabla almacena los comentarios hechos por los usuarios sobre las recetas.
 
 - **id** (bigint): Identificador único del comentario.
@@ -88,9 +73,6 @@ Esta tabla almacena los comentarios hechos por los usuarios sobre las recetas.
 - **POST /recipes**: Permite a un usuario crear una nueva receta.
 - **GET /recipes**: Obtiene una lista de todas las recetas.
 - **GET /recipes/{id}**: Obtiene los detalles de una receta específica.
-
-### Endpoints de Ingredientes
-- **GET /ingredients**: Obtiene una lista de todos los ingredientes disponibles.
 
 ### Endpoints de Favoritos
 - **POST /favorites**: Marca una receta como favorita.
