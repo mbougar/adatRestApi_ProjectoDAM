@@ -32,21 +32,39 @@ class SecurityConfig {
     private lateinit var rsaKeys: RSAKeysProperties
 
     @Bean
-    fun securityFilterChain(http: HttpSecurity) : SecurityFilterChain {
-
+    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         return http
             .csrf { csrf -> csrf.disable() }
             .authorizeHttpRequests { auth -> auth
                 .requestMatchers("/users/register").permitAll()
                 .requestMatchers("/users/login").permitAll()
-                .requestMatchers(HttpMethod.GET,"/users/{id}").authenticated()
+
+                .requestMatchers(HttpMethod.GET, "/users/{id}").authenticated()
+                .requestMatchers(HttpMethod.GET, "/users").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/users/{id}").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/users/{id}").authenticated()
+
+                .requestMatchers(HttpMethod.POST, "/recipes").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/recipes/{id}").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/recipes/{id}").authenticated()
+                .requestMatchers(HttpMethod.GET, "/recipes").permitAll()
+                .requestMatchers(HttpMethod.GET, "/recipes/{id}").permitAll()
+
+                .requestMatchers(HttpMethod.POST, "/comments").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/comments/comment/{id}").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/comments/comment/{id}").authenticated()
+                .requestMatchers(HttpMethod.GET, "/comments/{recipe_id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/comments").permitAll()
+
+                .requestMatchers(HttpMethod.POST, "/favorites").authenticated()
+                .requestMatchers(HttpMethod.GET, "/favorites/{id}").authenticated()
+
                 .anyRequest().authenticated()
             }
             .oauth2ResourceServer { oauth2 -> oauth2.jwt(Customizer.withDefaults()) }
             .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .httpBasic(Customizer.withDefaults())
             .build()
-
     }
 
     @Bean

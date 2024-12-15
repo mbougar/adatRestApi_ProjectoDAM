@@ -64,4 +64,34 @@ class UsuarioService: UserDetailsService {
     fun getUsuarioById(id: Long): Usuario? {
         return usuarioRepository.findById(id).orElse(null)
     }
+
+    fun getAllUsuarios(): List<Usuario> {
+        return usuarioRepository.findAll()
+    }
+
+    fun deleteUsuarioById(id: Long): Boolean {
+        return if (usuarioRepository.existsById(id)) {
+            usuarioRepository.deleteById(id)
+            true
+        } else {
+            false
+        }
+    }
+
+    fun updateUsuario(id: Long, usuario: Usuario): Usuario? {
+        val existingUsuario = usuarioRepository.findById(id)
+        if (existingUsuario.isPresent) {
+            val usuarioToUpdate = existingUsuario.get()
+            usuarioToUpdate.username = usuario.username ?: usuarioToUpdate.username
+            usuarioToUpdate.email = usuario.email ?: usuarioToUpdate.email
+            if (!usuario.password.isNullOrBlank()) {
+                usuarioToUpdate.password = passwordEncoder.encode(usuario.password)
+            }
+            usuarioToUpdate.bio = usuario.bio ?: usuarioToUpdate.bio
+            usuarioToUpdate.fechaRegistro = usuario.fechaRegistro ?: usuarioToUpdate.fechaRegistro
+            usuarioToUpdate.roles = usuario.roles ?: usuarioToUpdate.roles
+            return usuarioRepository.save(usuarioToUpdate)
+        }
+        return null
+    }
 }

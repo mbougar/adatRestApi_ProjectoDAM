@@ -66,37 +66,56 @@ Esta tabla almacena los comentarios hechos por los usuarios sobre las recetas.
 
 ### Endpoints de Usuario
 - **POST /users/register**: Registra un nuevo usuario en la plataforma.
-    - Respuesta: Código 201 (Created) o 400 (Bad Request).
+  - Respuesta: Código 201 (Created) o 400 (Bad Request).
 - **POST /users/login**: Inicia sesión con un usuario existente.
-    - Respuesta: Código 201 (Created) o 400 (Bad Request).
+  - Respuesta: Código 201 (Created) o 400 (Bad Request).
 - **GET /users/{id}**: Obtiene información del usuario por ID.
-    - Respuesta: Código 200 (OK) o 404 (Not Found).
+  - Respuesta: Código 200 (OK) o 404 (Not Found).
+- **GET /users**: Obtiene una lista de todos los usuarios.
+  - Respuesta: Código 200 (OK).
+- **PUT /users/{id}**: Actualiza los datos de un usuario existente.
+  - Respuesta: Código 200 (OK) o 404 (Not Found).
+- **DELETE /users/{id}**: Elimina un usuario por ID.
+  - Respuesta: Código 204 (No Content) o 404 (Not Found).
 
 ### Endpoints de Recetas
 - **POST /recipes**: Permite a un usuario crear una nueva receta.
-    - Respuesta: Código 201 (Created) o 400 (Bad Request).
+  - Respuesta: Código 201 (Created) o 400 (Bad Request).
 - **GET /recipes**: Obtiene una lista de todas las recetas.
-    - Respuesta: Código 200 (OK) o 404 (Not Found).
+  - Respuesta: Código 200 (OK).
 - **GET /recipes/{id}**: Obtiene los detalles de una receta específica.
-    - Respuesta: Código 200 (OK) o 404 (Not Found).
+  - Respuesta: Código 200 (OK) o 404 (Not Found).
+- **PUT /recipes/{id}**: Actualiza una receta específica por ID.
+  - Respuesta: Código 200 (OK) o 404 (Not Found).
+- **DELETE /recipes/{id}**: Elimina una receta por ID.
+  - Respuesta: Código 204 (No Content) o 404 (Not Found).
 
 ### Endpoints de Favoritos
 - **POST /favorites**: Marca una receta como favorita.
-    - Respuesta: Código 201 (Created) o 400 (Bad Request).
+  - Respuesta: Código 201 (Created) o 400 (Bad Request).
 - **GET /favorites/{id}**: Obtiene todas las recetas favoritas de un usuario.
-    - Respuesta: Código 200 (OK) o 404 (Not Found).
+  - Respuesta: Código 200 (OK) o 404 (Not Found).
 
 ### Endpoints de Comentarios
-- **POST /comments**: Permite a un usuario comentar en una receta
-    - Respuesta: Código 201 (Created) o 400 (Bad Request).
+- **POST /comments**: Permite a un usuario comentar en una receta.
+  - Respuesta: Código 201 (Created) o 400 (Bad Request).
+- **GET /comments**: Obtiene una lista de todos los comentarios.
+  - Respuesta: Código 200 (OK).
 - **GET /comments/{recipe_id}**: Obtiene todos los comentarios de una receta.
-    - Respuesta: Código 200 (OK) o 404 (Not Found).
+  - Respuesta: Código 200 (OK) o 404 (Not Found).
+- **GET /comments/comment/{id}**: Obtiene los detalles de un comentario específico por ID.
+  - Respuesta: Código 200 (OK) o 404 (Not Found).
+- **PUT /comments/comment/{id}**: Actualiza un comentario específico por ID.
+  - Respuesta: Código 200 (OK) o 404 (Not Found).
+- **DELETE /comments/comment/{id}**: Elimina un comentario por ID.
+  - Respuesta: Código 204 (No Content) o 404 (Not Found).
 
 ## Excepciones y códigos de estado
-- **400 (Bad Request)**:  Datos inválidos (Ej: fecha anterior, correo duplicado).
-- **404 (Not Found)**: Entidad no encontrada (Ej: usuario o receta inexistente).
+- **400 (Bad Request)**: Datos inválidos (Ej: fecha anterior, correo duplicado, usuario no autorizado).
+- **404 (Not Found)**: Entidad no encontrada (Ej: usuario, receta o comentario inexistente).
 - **201 (Created)**: Creación exitosa de una entidad.
 - **200 (OK)**: Operación exitosa.
+- **204 (No Content)**: Eliminación exitosa de una entidad.
 
 ---
 

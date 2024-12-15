@@ -65,4 +65,32 @@ class UsuarioController {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
+
+    @GetMapping
+    fun getAllUsuarios(): ResponseEntity<List<Usuario>> {
+        val usuarios = usuarioService.getAllUsuarios()
+        return ResponseEntity(usuarios, HttpStatus.OK)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteUsuarioById(@PathVariable id: Long): ResponseEntity<Any> {
+        return if (usuarioService.deleteUsuarioById(id)) {
+            ResponseEntity(HttpStatus.NO_CONTENT)
+        } else {
+            ResponseEntity(mapOf("mensaje" to "Usuario no encontrado"), HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @PutMapping("/{id}")
+    fun updateUsuario(
+        @PathVariable id: Long,
+        @RequestBody usuario: Usuario
+    ): ResponseEntity<Usuario> {
+        val updatedUsuario = usuarioService.updateUsuario(id, usuario)
+        return if (updatedUsuario != null) {
+            ResponseEntity(updatedUsuario, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
 }

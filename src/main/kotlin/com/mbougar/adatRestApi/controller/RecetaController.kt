@@ -49,4 +49,26 @@ class RecetaController {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
+
+    @PutMapping("/{id}")
+    fun updateRecipe(
+        @PathVariable id: Long,
+        @RequestBody receta: Receta
+    ): ResponseEntity<Receta> {
+        val updatedReceta = recetaService.updateReceta(id, receta)
+        return if (updatedReceta != null) {
+            ResponseEntity(updatedReceta, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteRecipeById(@PathVariable id: Long): ResponseEntity<Any> {
+        return if (recetaService.deleteRecetaById(id)) {
+            ResponseEntity(HttpStatus.NO_CONTENT)
+        } else {
+            ResponseEntity(mapOf("mensaje" to "Receta no encontrada"), HttpStatus.NOT_FOUND)
+        }
+    }
 }

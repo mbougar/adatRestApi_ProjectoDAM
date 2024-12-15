@@ -18,7 +18,6 @@ class RecetaService {
     private lateinit var usuarioRepository: UsuarioRepository
 
     fun createReceta(receta: Receta): Receta {
-
         val authentication = SecurityContextHolder.getContext().authentication
         val usuarioAutenticado = if (authentication.principal is UserDetails) {
             (authentication.principal as UserDetails).username
@@ -27,12 +26,11 @@ class RecetaService {
         }
 
         val usuario = usuarioRepository.findByUsername(usuarioAutenticado)
-
-        if (receta.usuario != usuario) {
+        if (usuario.isPresent && receta.usuario == usuario.get()) {
+            return recetaRepository.save(receta)
+        } else {
             throw IllegalArgumentException("El usuario autenticado no coincide con el creador de la receta.")
         }
-
-        return recetaRepository.save(receta)
     }
 
     fun getAllRecetas(): List<Receta> {
@@ -41,5 +39,26 @@ class RecetaService {
 
     fun getRecetaById(id: Long): Receta? {
         return recetaRepository.findById(id).orElse(null)
+    }
+
+    fun updateReceta(id: Long, receta: Receta): Receta? {
+        val existingReceta = recetaRepository.findById(id)
+        if (existingReceta.isPresent) {
+            val recetaToUpdate = existingReceta.get()
+            recetaToUpdate.nombre = receta.nombre ?: recetaToUpdate.nombre
+            recetaToUpdate.pasos = receta.pasos ?: recetaToUpdate.pasos
+            recetaToUpdate.imagen = receta.imagen ?: recetaToUpdate.imagen
+            return recetaRepository.save(recetaToUpdate)
+        }
+        return null
+    }
+
+    fun deleteRecetaById(id: Long): Boolean {
+        return if (recetaRepository.existsById(id)) {
+            recetaRepository.deleteById(id)
+            true
+        } else {
+            false
+        }
     }
 }

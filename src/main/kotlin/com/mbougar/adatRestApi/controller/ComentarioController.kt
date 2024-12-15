@@ -44,4 +44,42 @@ class ComentarioController {
         val comentarios = comentarioService.getComentariosByRecetaId(recipe_id)
         return ResponseEntity(comentarios, HttpStatus.OK)
     }
+
+    @GetMapping
+    fun getAllComments(): ResponseEntity<List<Comentario>> {
+        val comentarios = comentarioService.getAllComentarios()
+        return ResponseEntity(comentarios, HttpStatus.OK)
+    }
+
+    @GetMapping("/comment/{id}")
+    fun getCommentById(@PathVariable id: Long): ResponseEntity<Comentario> {
+        val comentario = comentarioService.getComentarioById(id)
+        return if (comentario != null) {
+            ResponseEntity(comentario, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @PutMapping("/comment/{id}")
+    fun updateComment(
+        @PathVariable id: Long,
+        @RequestBody comentario: Comentario
+    ): ResponseEntity<Comentario> {
+        val updatedComentario = comentarioService.updateComentario(id, comentario)
+        return if (updatedComentario != null) {
+            ResponseEntity(updatedComentario, HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @DeleteMapping("/comment/{id}")
+    fun deleteCommentById(@PathVariable id: Long): ResponseEntity<Any> {
+        return if (comentarioService.deleteComentarioById(id)) {
+            ResponseEntity(HttpStatus.NO_CONTENT)
+        } else {
+            ResponseEntity(mapOf("mensaje" to "Comentario no encontrado"), HttpStatus.NOT_FOUND)
+        }
+    }
 }
