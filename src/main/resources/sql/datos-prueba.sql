@@ -1,7 +1,7 @@
 -- Insert Usuarios
-INSERT INTO `usuarios` (`username`, `password`, `role`, `email`, `bio`, `fecha_registro`) VALUES ('chefjohn', '$2a$10$L989osrU7uJE3zPCShrhxucC4HZlVaXAuf9h1CgFiFqhNcfLcxl2O', 'user', 'chefjohn@example.com', 'Lover of fine cooking.', '2023-01-01 10:00:00');
-INSERT INTO `usuarios` (`username`, `password`, `role`, `email`, `bio`, `fecha_registro`) VALUES ('janedoe', '$2a$10$L989osrU7uJE3zPCShrhxucC4HZlVaXAuf9h1CgFiFqhNcfLcxl2O', 'user', 'janedoe@example.com', 'Food blogger and recipe enthusiast.', '2023-01-02 11:30:00');
-INSERT INTO `usuarios` (`username`, `password`, `role`, `email`, `bio`, `fecha_registro`) VALUES ('admin', '$2a$10$M4Un/u5Qt6IT4JqKvo50zetnZz1lRGn/vhW8Cy4KVMb96sVq4TG..', 'admin', 'admin@example.com', 'Platform administrator.', '2023-01-01 09:00:00');
+INSERT INTO `usuarios` (`username`, `password`, `roles`, `email`, `bio`, `fecha_registro`) VALUES ('chefjohn', '$2a$10$L989osrU7uJE3zPCShrhxucC4HZlVaXAuf9h1CgFiFqhNcfLcxl2O', 'user', 'chefjohn@example.com', 'Lover of fine cooking.', '2023-01-01 10:00:00');
+INSERT INTO `usuarios` (`username`, `password`, `roles`, `email`, `bio`, `fecha_registro`) VALUES ('janedoe', '$2a$10$L989osrU7uJE3zPCShrhxucC4HZlVaXAuf9h1CgFiFqhNcfLcxl2O', 'user', 'janedoe@example.com', 'Food blogger and recipe enthusiast.', '2023-01-02 11:30:00');
+INSERT INTO `usuarios` (`username`, `password`, `roles`, `email`, `bio`, `fecha_registro`) VALUES ('admin', '$2a$10$M4Un/u5Qt6IT4JqKvo50zetnZz1lRGn/vhW8Cy4KVMb96sVq4TG..', 'admin', 'admin@example.com', 'Platform administrator.', '2023-01-01 09:00:00');
 
 -- Insert Ingredientes
 INSERT INTO `ingredientes` (`nombre`) VALUES ('Tomato');

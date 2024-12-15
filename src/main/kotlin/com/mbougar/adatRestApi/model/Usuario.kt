@@ -15,7 +15,7 @@ data class Usuario(
     @Column(nullable = false)
     var password: String? = null,
 
-    var role: String? = null, // "user" o "admin"
+    var roles: String? = null, // "user" o "admin"
 
     var email: String? = null,
 
