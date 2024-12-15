@@ -8,6 +8,10 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.*
 
 @Service
 class UsuarioService: UserDetailsService {
@@ -32,6 +36,16 @@ class UsuarioService: UserDetailsService {
     }
 
     fun registerUsuario(usuario: Usuario): Usuario {
+        val fechaActual = LocalDateTime.now(ZoneId.systemDefault())
+        if (usuario.fechaRegistro != null && usuario.fechaRegistro!!.isBefore(fechaActual)) {
+            throw Exception("La fecha de creación no puede ser anterior a la actual.")
+        }
+
+        val existingEmail = usuarioRepository.findByEmail(usuario.email!!)
+        if (existingEmail.isPresent) {
+            throw Exception("El correo ya está registrado.")
+        }
+
         val existingUsuario = usuarioRepository.findByUsername(usuario.username!!)
         if (existingUsuario.isPresent) {
             throw Exception("El usuario ya existe")

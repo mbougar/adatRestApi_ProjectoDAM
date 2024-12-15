@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.lang.Exception
 
 @RestController
 @RequestMapping("/recipes")
@@ -19,13 +20,17 @@ class RecetaController {
 
     @PostMapping
     fun createRecipe(@RequestBody newReceta: Receta): ResponseEntity<Receta> {
-        val usuario = newReceta.usuario?.id?.let { usuarioService.getUsuarioById(it) }
-        if (usuario != null) {
-            newReceta.usuario = usuario
-            val recetaCreada = recetaService.createReceta(newReceta)
-            return ResponseEntity(recetaCreada, HttpStatus.CREATED)
-        } else {
-            return ResponseEntity(HttpStatus.NOT_FOUND)
+        return try {
+            val usuario = newReceta.usuario?.id?.let { usuarioService.getUsuarioById(it) }
+            if (usuario != null) {
+                newReceta.usuario = usuario
+                val recetaCreada = recetaService.createReceta(newReceta)
+                ResponseEntity(recetaCreada, HttpStatus.CREATED)
+            } else {
+                ResponseEntity(HttpStatus.NOT_FOUND)
+            }
+        } catch (e: Exception) {
+            ResponseEntity(HttpStatus.BAD_REQUEST)
         }
     }
 

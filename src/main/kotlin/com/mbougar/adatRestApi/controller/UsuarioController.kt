@@ -30,13 +30,12 @@ class UsuarioController {
         @RequestBody newUsuario: Usuario
     ): ResponseEntity<Usuario> {
 
-        if (usuarioService.existsByUsername(newUsuario.username)) {
-            return ResponseEntity(null, HttpStatus.BAD_REQUEST)
+        return try {
+            val usuarioRegistrado = usuarioService.registerUsuario(newUsuario)
+            ResponseEntity(usuarioRegistrado, HttpStatus.CREATED)
+        } catch (e: Exception) {
+            ResponseEntity(HttpStatus.BAD_REQUEST)
         }
-
-        val usuarioRegistrado = usuarioService.registerUsuario(newUsuario)
-
-        return ResponseEntity(usuarioRegistrado, HttpStatus.CREATED)
     }
 
     @PostMapping("/login")
