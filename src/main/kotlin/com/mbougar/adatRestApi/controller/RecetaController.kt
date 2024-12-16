@@ -23,26 +23,12 @@ class RecetaController {
     // Acordarme de cambiar esta clase
     @PostMapping
     fun createRecipe(@RequestBody newReceta: Receta, authentication: Authentication): ResponseEntity<Receta> {
-        return try {
-            val authenticatedUsername = authentication.name
-            val authorities = authentication.authorities.map { it.authority }
-
-            val authenticatedUsuario = usuarioService.getUsuarioByUsername(authenticatedUsername)
-                ?: return ResponseEntity(HttpStatus.UNAUTHORIZED)
-
-            val isAdmin = authorities.contains("admin")
-            val isOwner = newReceta.usuario?.id == authenticatedUsuario.id
-
-            if (!isOwner && !isAdmin) {
-                return ResponseEntity(HttpStatus.FORBIDDEN)
-            }
-
-            newReceta.usuario = authenticatedUsuario
+        try {
+            // Validación y creación
             val recetaCreada = recetaService.createReceta(newReceta)
-            ResponseEntity(recetaCreada, HttpStatus.CREATED)
-
-        } catch (e: Exception) {
-            ResponseEntity(HttpStatus.BAD_REQUEST)
+            return ResponseEntity(recetaCreada, HttpStatus.CREATED)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
     }
 

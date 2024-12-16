@@ -26,11 +26,23 @@ class RecetaService {
         }
 
         val usuario = usuarioRepository.findByUsername(usuarioAutenticado)
-        if (usuario.isPresent && receta.usuario == usuario.get()) {
-            return recetaRepository.save(receta)
-        } else {
-            throw IllegalArgumentException("El usuario autenticado no coincide con el creador de la receta.")
+        if (!usuario.isPresent) {
+            throw IllegalArgumentException("Usuario no encontrado.")
         }
+
+        if (receta.fechaCreacion?.isBefore(java.time.LocalDateTime.now()) == true) {
+            throw IllegalArgumentException("La fecha de creación no puede ser anterior a la fecha actual.")
+        }
+
+        val isAdmin = usuario.get().roles == "admin"
+        val isOwner = receta.usuario?.id == usuario.get().id
+
+        if (!isAdmin && !isOwner) {
+            throw IllegalArgumentException("No tiene permisos para crear esta receta.")
+        }
+
+        receta.usuario = usuario.get()
+        return recetaRepository.save(receta)
     }
 
     fun getAllRecetas(): List<Receta> {
@@ -47,7 +59,6 @@ class RecetaService {
             val recetaToUpdate = existingReceta.get()
             recetaToUpdate.nombre = receta.nombre ?: recetaToUpdate.nombre
             recetaToUpdate.pasos = receta.pasos ?: recetaToUpdate.pasos
-            recetaToUpdate.imagen = receta.imagen ?: recetaToUpdate.imagen
             return recetaRepository.save(recetaToUpdate)
         }
         return null
