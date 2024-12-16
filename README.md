@@ -41,7 +41,6 @@ Almacena la información de las recetas compartidas por los usuarios.
 - `id_usuario` (bigint): Identificador del usuario que publicó la receta (relación con la tabla `usuarios`).
 - `fecha_creacion` (datetime): Fecha de creación de la receta.
 - `pasos` (text): Descripción detallada de los pasos para preparar la receta.
-- `imagen` (bytea): Imagen de la receta (se guardara como un array de bytes).
 
 ### 3. **favoritos**
 Tabla que almacena las recetas marcadas como favoritas por los usuarios.
@@ -116,6 +115,37 @@ Esta tabla almacena los comentarios hechos por los usuarios sobre las recetas.
 - **201 (Created)**: Creación exitosa de una entidad.
 - **200 (OK)**: Operación exitosa.
 - **204 (No Content)**: Eliminación exitosa de una entidad.
+
+---
+
+## Lógica de Negocio
+
+Para garantizar un comportamiento correcto y seguro de la API, se implementarán las siguientes reglas de negocio:
+
+### 1. **Creación de Recetas y Favoritos**
+- **Regla**: Solo el propio usuario o un administrador podrán realizar estas acciones:
+  - Crear una receta en nombre del **usuario actual**.
+  - Añadir una receta como favorita para un usuario en concreto.
+- **Explicación**:
+  - Un usuario con rol `admin` podrá realizar estas acciones en nombre de otros usuarios.
+  - Un usuario con rol `user` podrá realizar estas acciones únicamente en su propio perfil.
+  - Esto se verificará comparando el `id` del usuario autenticado (decodificado del token) con el `id` del usuario objetivo y permitiendo acceso adicional si el rol es `admin`.
+
+---
+
+### 2. **Validación de Fechas**
+- **Regla**: Tanto en la creación de recetas como en la adición de favoritos, la fecha proporcionada (`fecha_creacion` o `fecha_agregado`) debe ser igual o posterior a la fecha actual.
+- **Explicación**:
+  - Cualquier intento de usar una fecha en el pasado será bloqueado y resultará en un error `400 Bad Request`.
+  - Esto asegura que no se registre información inconsistente o incoherente.
+
+---
+
+### 3. **Eliminación de Datos**
+- **Regla**: Solo el propio usuario o un administrador podrán realizar operaciones de eliminación (como eliminar una receta, un favorito o un comentario).
+- **Explicación**:
+  - Un usuario podrá eliminar únicamente sus propias recetas, favoritos o comentarios, verificando que el `id` del recurso corresponde al `id` del usuario autenticado.
+  - Un administrador tendrá permisos para realizar eliminaciones sobre recursos de cualquier usuario.
 
 ---
 
