@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.lang.Exception
+import org.springframework.security.core.Authentication
 
 @RestController
 @RequestMapping("/recipes")
@@ -18,17 +19,28 @@ class RecetaController {
     @Autowired
     private lateinit var usuarioService: UsuarioService
 
+
+    // Acordarme de cambiar esta clase
     @PostMapping
-    fun createRecipe(@RequestBody newReceta: Receta): ResponseEntity<Receta> {
+    fun createRecipe(@RequestBody newReceta: Receta, authentication: Authentication): ResponseEntity<Receta> {
         return try {
-            val usuario = newReceta.usuario?.id?.let { usuarioService.getUsuarioById(it) }
-            if (usuario != null) {
-                newReceta.usuario = usuario
-                val recetaCreada = recetaService.createReceta(newReceta)
-                ResponseEntity(recetaCreada, HttpStatus.CREATED)
-            } else {
-                ResponseEntity(HttpStatus.NOT_FOUND)
+            val authenticatedUsername = authentication.name
+            val authorities = authentication.authorities.map { it.authority }
+
+            val authenticatedUsuario = usuarioService.getUsuarioByUsername(authenticatedUsername)
+                ?: return ResponseEntity(HttpStatus.UNAUTHORIZED)
+
+            val isAdmin = authorities.contains("admin")
+            val isOwner = newReceta.usuario?.id == authenticatedUsuario.id
+
+            if (!isOwner && !isAdmin) {
+                return ResponseEntity(HttpStatus.FORBIDDEN)
             }
+
+            newReceta.usuario = authenticatedUsuario
+            val recetaCreada = recetaService.createReceta(newReceta)
+            ResponseEntity(recetaCreada, HttpStatus.CREATED)
+
         } catch (e: Exception) {
             ResponseEntity(HttpStatus.BAD_REQUEST)
         }

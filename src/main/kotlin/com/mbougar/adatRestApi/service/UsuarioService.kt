@@ -61,6 +61,10 @@ class UsuarioService: UserDetailsService {
         return existingUsuario.isPresent
     }
 
+    fun getUsuarioByUsername(username: String?): Usuario? {
+        return username?.let { usuarioRepository.findByUsername(it).orElse(null) }
+    }
+
     fun getUsuarioById(id: Long): Usuario? {
         return usuarioRepository.findById(id).orElse(null)
     }
