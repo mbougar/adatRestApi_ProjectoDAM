@@ -14,12 +14,6 @@ class FavoritoController {
     @Autowired
     private lateinit var favoritoService: FavoritoService
 
-    @Autowired
-    private lateinit var usuarioService: UsuarioService
-
-    @Autowired
-    private lateinit var recetaService: RecetaService
-
     @PostMapping
     fun addFavorite(@RequestBody favorito: Favorito): ResponseEntity<Favorito> {
         val favoritoCreado = favoritoService.addFavorito(favorito)

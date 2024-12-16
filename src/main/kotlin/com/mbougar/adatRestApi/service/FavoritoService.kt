@@ -24,21 +24,23 @@ class FavoritoService {
         }
 
         val authentication = SecurityContextHolder.getContext().authentication
-        val usuarioAutenticado = if (authentication.principal is UserDetails) {
+        val nombreUsuarioAutenticado = if (authentication.principal is UserDetails) {
             (authentication.principal as UserDetails).username
         } else {
             authentication.principal.toString()
         }
+
+        val usuarioAutenticado = usuarioRepository.findByUsername(nombreUsuarioAutenticado)
 
         val usuario = favorito.usuario?.id?.let { usuarioRepository.findById(it) }
         if (usuario == null || !usuario.isPresent) {
             throw IllegalArgumentException("Usuario no encontrado.")
         }
 
-        val isAdmin = usuario.get().roles == "admin"
-        val isOwner = favorito.usuario?.id == usuario.get().id
+        val isAdmin = usuarioAutenticado.get().roles == "admin"
+        val isOwner = favorito.usuario?.id == usuarioAutenticado.get().id
 
-        if (!isAdmin && !isOwner) {
+        if (!isAdmin && isOwner) {
             throw IllegalArgumentException("No tiene permisos para agregar este favorito.")
         }
 

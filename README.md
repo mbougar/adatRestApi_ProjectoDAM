@@ -61,7 +61,7 @@ Esta tabla almacena los comentarios hechos por los usuarios sobre las recetas.
 
 ---
 
-## Funcionalidades Clave de la API
+## Funcionalidades de la API
 
 ### Endpoints de Usuario
 - **POST /users/register**: Registra un nuevo usuario en la plataforma.
@@ -151,4 +151,4 @@ Para garantizar un comportamiento correcto y seguro de la API, se implementarán
 
 ## Diagrama Entidad-Relación
 
-![My image](DiagramaER.png)
+![My image](diagrama.png)

@@ -19,12 +19,9 @@ class RecetaController {
     @Autowired
     private lateinit var usuarioService: UsuarioService
 
-
-    // Acordarme de cambiar esta clase
     @PostMapping
     fun createRecipe(@RequestBody newReceta: Receta, authentication: Authentication): ResponseEntity<Receta> {
         try {
-            // Validación y creación
             val recetaCreada = recetaService.createReceta(newReceta)
             return ResponseEntity(recetaCreada, HttpStatus.CREATED)
         } catch (e: IllegalArgumentException) {
