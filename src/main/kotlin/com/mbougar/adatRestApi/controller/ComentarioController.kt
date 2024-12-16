@@ -20,7 +20,7 @@ class ComentarioController {
     @Autowired
     private lateinit var recetaService: RecetaService
 
-    @PostMapping("/comment")
+    @PostMapping
     fun addComment(@RequestBody comentario: Comentario): ResponseEntity<Comentario> {
 
         val usuario = comentario.usuario?.id?.let { usuarioService.getUsuarioById(it) }

@@ -25,23 +25,30 @@ class RecetaService {
             authentication.principal.toString()
         }
 
-        val usuario = usuarioRepository.findByUsername(usuarioAutenticado)
-        if (!usuario.isPresent) {
-            throw IllegalArgumentException("Usuario no encontrado.")
+        val usuario = receta.usuario?.username?.let { usuarioRepository.findByUsername(it) }
+        if (usuario != null) {
+            if (!usuario.isPresent) {
+                println("hola3")
+                throw IllegalArgumentException("Usuario no encontrado.")
+            }
         }
 
         if (receta.fechaCreacion?.isBefore(java.time.LocalDateTime.now()) == true) {
+            println("hola2")
             throw IllegalArgumentException("La fecha de creación no puede ser anterior a la fecha actual.")
         }
 
-        val isAdmin = usuario.get().roles == "admin"
-        val isOwner = receta.usuario?.id == usuario.get().id
+        val isAdmin = usuario?.get()?.roles == "admin"
+        val isOwner = receta.usuario?.id == usuario?.get()?.id
 
         if (!isAdmin && !isOwner) {
+            println("hola")
             throw IllegalArgumentException("No tiene permisos para crear esta receta.")
         }
 
-        receta.usuario = usuario.get()
+        if (usuario != null) {
+            receta.usuario = usuario.get()
+        }
         return recetaRepository.save(receta)
     }
 

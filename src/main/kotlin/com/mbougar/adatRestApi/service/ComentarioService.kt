@@ -25,12 +25,14 @@ class ComentarioService {
             authentication.principal.toString()
         }
 
-        val usuario = usuarioRepository.findByUsername(usuarioAutenticado)
-        if (usuario.isEmpty) {
-            throw IllegalArgumentException("Usuario no encontrado.")
+        val usuario = comentario.usuario?.username?.let { usuarioRepository.findByUsername(it) }
+        if (usuario != null) {
+            if (usuario.isEmpty) {
+                throw IllegalArgumentException("Usuario no encontrado.")
+            }
         }
-        val isAdmin = usuario.get().roles == "admin"
-        val isOwner = comentario.usuario?.id == usuario.get().id
+        val isAdmin = usuario?.get()?.roles == "admin"
+        val isOwner = comentario.usuario?.id == usuario?.get()?.id
 
         if (!isAdmin && !isOwner) {
             throw IllegalArgumentException("No tiene permisos para añadir este comentario.")
@@ -40,7 +42,9 @@ class ComentarioService {
             throw IllegalArgumentException("La fecha de creación no puede ser anterior a la fecha actual.")
         }
 
-        comentario.usuario = usuario.get()
+        if (usuario != null) {
+            comentario.usuario = usuario.get()
+        }
         return comentarioRepository.save(comentario)
     }
 

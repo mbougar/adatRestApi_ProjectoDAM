@@ -20,7 +20,7 @@ class RecetaController {
     private lateinit var usuarioService: UsuarioService
 
     @PostMapping
-    fun createRecipe(@RequestBody newReceta: Receta, authentication: Authentication): ResponseEntity<Receta> {
+    fun createRecipe(@RequestBody newReceta: Receta): ResponseEntity<Receta> {
         try {
             val recetaCreada = recetaService.createReceta(newReceta)
             return ResponseEntity(recetaCreada, HttpStatus.CREATED)

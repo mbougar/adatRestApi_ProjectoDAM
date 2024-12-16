@@ -7,10 +7,6 @@ INSERT INTO `usuarios` (`username`, `password`, `roles`, `email`, `bio`, `fecha_
 INSERT INTO `recetas` (`nombre`, `id_usuario`, `fecha_creacion`, `pasos`) VALUES ('Spaghetti Pomodoro', 1, '2023-01-03 12:00:00', '1. Cook pasta. 2. Make sauce. 3. Combine.');
 INSERT INTO `recetas` (`nombre`, `id_usuario`, `fecha_creacion`, `pasos`) VALUES ('Grilled Chicken', 2, '2023-01-04 13:15:00', '1. Marinate chicken. 2. Grill until golden.');
 
--- Insert Favoritos
-INSERT INTO `favoritos` (`id_usuario`, `id_receta`, `fecha_agregado`) VALUES (1, 2, '2023-01-05 15:00:00');
-INSERT INTO `favoritos` (`id_usuario`, `id_receta`, `fecha_agregado`) VALUES (2, 1, '2023-01-06 16:30:00');
-
 -- Insert Comentarios
 INSERT INTO `comentarios` (`id_receta`, `id_usuario`, `comentario`, `fecha_creacion`) VALUES (1, 2, 'Delicious and easy to make!', '2023-01-07 10:00:00');
 INSERT INTO `comentarios` (`id_receta`, `id_usuario`, `comentario`, `fecha_creacion`) VALUES (2, 1, 'Perfectly grilled, will make again!', '2023-01-08 11:30:00');

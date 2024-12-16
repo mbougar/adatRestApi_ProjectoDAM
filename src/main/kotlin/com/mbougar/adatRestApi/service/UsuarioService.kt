@@ -74,8 +74,9 @@ class UsuarioService: UserDetailsService {
     }
 
     fun deleteUsuarioById(id: Long): Boolean {
-        return if (usuarioRepository.existsById(id)) {
-            usuarioRepository.deleteById(id)
+        val usuario = usuarioRepository.findById(id)
+        return if (usuario.isPresent) {
+            usuarioRepository.delete(usuario.get())
             true
         } else {
             false
